@@ -5,6 +5,7 @@ class Textfield extends StatefulWidget {
   final bool isPass;
   final String hintText;
   final IconData icon;
+  final FocusNode? focusNode;
 
   const Textfield({
     super.key,
@@ -12,6 +13,7 @@ class Textfield extends StatefulWidget {
     this.isPass = false,
     required this.hintText,
     required this.icon,
+    this.focusNode,
   });
 
   @override
@@ -43,6 +45,7 @@ class _TextfieldState extends State<Textfield> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextField(
+        focusNode: widget.focusNode,
         controller: widget.textEditingController,
         obscureText: widget.isPass && !_isPasswordVisible,
         decoration: InputDecoration(

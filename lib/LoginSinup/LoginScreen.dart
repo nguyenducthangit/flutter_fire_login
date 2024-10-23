@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signup_login/LoginSinup/HomeScreen.dart';
 import 'package:flutter_signup_login/LoginSinup/Signup.dart';
 import 'package:flutter_signup_login/Widgets/ButtonLogin.dart';
+import 'package:flutter_signup_login/Widgets/SnackBar.dart';
 import 'package:flutter_signup_login/Widgets/TextField.dart';
 
 import '../Services/authentication.dart';
@@ -67,7 +68,7 @@ class _LoginscreenState extends State<Loginscreen> {
         ),
       );
       // show the error massage
-      SnackBar(content: Text(res));
+      showSnackBar(context, res);
     }
   }
 
