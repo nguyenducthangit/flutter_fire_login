@@ -14,7 +14,7 @@ class Buttonlogin extends StatelessWidget {
     return InkWell(
       onTap: onTad,
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
         child: Container(
           alignment: Alignment.center,
           padding: EdgeInsets.symmetric(vertical: 20),

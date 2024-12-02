@@ -25,7 +25,7 @@ class AuthServices {
           'email': email,
           'uid': credential.user!.uid,
         });
-        res = "successfully";
+        res = "success";
         //for resister user in auth with email and password
       }
     } on FirebaseAuthException catch (e) {

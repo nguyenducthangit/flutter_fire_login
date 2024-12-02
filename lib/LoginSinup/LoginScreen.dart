@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signup_login/LoginSinup/ForgotPassword.dart';
 import 'package:flutter_signup_login/LoginSinup/HomeScreen.dart';
 import 'package:flutter_signup_login/LoginSinup/Signup.dart';
 import 'package:flutter_signup_login/Widgets/ButtonLogin.dart';
@@ -18,6 +19,10 @@ class _LoginscreenState extends State<Loginscreen> {
   //for controler
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+
   void despose() {
     super.dispose();
     emailController.dispose();
@@ -77,73 +82,108 @@ class _LoginscreenState extends State<Loginscreen> {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: SizedBox(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: double.infinity,
-                height: height / 2.7,
-                child: Image.asset("assets/images/login.jpg"),
-              ),
-              Textfield(
-                textEditingController: emailController,
-                hintText: "enter your email",
-                icon: Icons.email,
-              ),
-              Textfield(
-                textEditingController: passwordController,
-                hintText: "enter your password",
-                icon: Icons.lock,
-                isPass: true,
-              ),
-              // Forgot Password
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'Forgot Password',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      color: Colors.blue,
+      body: GestureDetector(
+        onTap: () {
+          emailFocusNode.unfocus();
+          passwordFocusNode.unfocus();
+        },
+        child: SingleChildScrollView(
+          child: SizedBox(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  height: height / 2.7,
+                  child: Image.asset("assets/images/login.jpg"),
+                ),
+                Textfield(
+                  textEditingController: emailController,
+                  hintText: "enter your email",
+                  icon: Icons.email,
+                  focusNode: null,
+                ),
+                Textfield(
+                  textEditingController: passwordController,
+                  hintText: "enter your password",
+                  icon: Icons.lock,
+                  isPass: true,
+                  focusNode: null,
+                ),
+
+                // Forgot Password
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    Forgotpassword(),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              const begin = Offset(1.0, 0.0);
+                              const end = Offset.zero;
+                              const curve = Curves.easeInOut;
+
+                              var tween = Tween(begin: begin, end: end).chain(
+                                CurveTween(curve: curve),
+                              );
+
+                              return SlideTransition(
+                                position: animation.drive(tween),
+                                child: child,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Forgot Password?',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: Colors.blueAccent,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Buttonlogin(onTad: loginUser, text: "Login"),
-              SizedBox(
-                height: height / 15,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                  ),
-                  const Text(
-                    "Don't have an account?",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => Signup(),
+                Buttonlogin(onTad: loginUser, text: "Login"),
+                SizedBox(
+                  height: height / 15,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                    ),
+                    const Text(
+                      "Don't have an account?",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => Signup(),
+                        ),
+                      ),
+                      child: const Text(
+                        "Signup",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                    child: const Text(
-                      "Signup",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

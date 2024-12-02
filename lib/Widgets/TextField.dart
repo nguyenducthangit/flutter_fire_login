@@ -13,7 +13,7 @@ class Textfield extends StatefulWidget {
     this.isPass = false,
     required this.hintText,
     required this.icon,
-    this.focusNode,
+    required this.focusNode,
   });
 
   @override

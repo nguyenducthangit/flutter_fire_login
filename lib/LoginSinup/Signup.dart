@@ -21,6 +21,7 @@ class _SignupState extends State<Signup> {
   final FocusNode emailFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
   final FocusNode nameFocusNode = FocusNode();
+
   bool isEmailErro = true;
   final RegExp regexp = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]');
   bool isLoading = false;
@@ -35,13 +36,13 @@ class _SignupState extends State<Signup> {
         } else {
           isEmailErro = false;
           print("okela" + isEmailErro.toString());
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Định dạng email bị sai "),
-              backgroundColor: Colors.red,
-              duration: Duration(seconds: 2),
-            ),
-          );
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(
+          //     content: Text("Định dạng email bị sai "),
+          //     backgroundColor: Colors.red,
+          //     duration: Duration(seconds: 2),
+          //   ),
+          // );
         }
       },
     );
@@ -55,39 +56,79 @@ class _SignupState extends State<Signup> {
     nameController.dispose();
   }
 
+//   void SignUpUser() async {
+//     String res = await AuthServices().SignUpUser(
+//       email: emailController.text,
+//       name: nameController.text,
+//       password: passwordController.text,
+//     );
+//     //if signup is success ,usser has been create and navigate to the next screen
+//     // otherwise show the orror massage
+//     if (res == 'success') {
+//       setState(() {
+//         //navigate to the next screen
+//         isLoading = true;
+//       });
+//       nameController.clear();
+//       emailController.clear();
+//       passwordController.clear();
+//
+//       Navigator.of(context).push(
+//         MaterialPageRoute(
+//           builder: (context) => Homescreen(),
+//         ),
+//       );
+//       showSnackBar(context, res);
+//     } else {
+//       setState(() {
+//         isLoading = false;
+//       });
+//       showSnackBar(context, res);
+//     }
+//   }
   void SignUpUser() async {
+    // Gọi dịch vụ đăng ký người dùng
     String res = await AuthServices().SignUpUser(
       email: emailController.text,
       name: nameController.text,
       password: passwordController.text,
     );
-    //if signup is success ,usser has been create and navigate to the next screen
-    // otherwise show the orror massage
-    if (res == 'successfully') {
+
+    // Nếu đăng ký thành công
+    if (res == 'success') {
       setState(() {
-        //navigate to the next screen
+        // Đặt isLoading thành true nếu cần
         isLoading = true;
       });
-      // nameController.clear();
-      // emailController.clear();
-      // passwordController.clear();
 
+      // Xóa dữ liệu từ các trường nhập
+      nameController.clear();
+      emailController.clear();
+      passwordController.clear();
+
+      // Hiển thị thông báo thành công
+      showSnackBar(context, 'Sign up successful! Please log in.');
+
+      // Điều hướng về trang đăng nhập sau khi thành công
       Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => Homescreen(),
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Đăng ký tài khoản thành công!'),
-          duration: Duration(seconds: 2),
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              Loginscreen(),
         ),
       );
     } else {
+      // Nếu đăng ký không thành công
       setState(() {
         isLoading = false;
       });
-      showSnackBar(context, res);
+
+      // Xóa dữ liệu từ các trường nhập
+      nameController.clear();
+      emailController.clear();
+      passwordController.clear();
+
+      // Hiển thị thông báo lỗi
+      showSnackBar(context, 'Sign up failed: $res');
     }
   }
 
@@ -99,6 +140,8 @@ class _SignupState extends State<Signup> {
       body: GestureDetector(
         onTap: () {
           emailFocusNode.unfocus();
+          nameFocusNode.unfocus();
+          passwordFocusNode.unfocus();
         },
         child: SingleChildScrollView(
           child: Padding(
@@ -138,7 +181,7 @@ class _SignupState extends State<Signup> {
                   SizedBox(
                     height: height / 80,
                   ),
-                  // Text(res, style: TextStyle(color: Colors.red)),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
